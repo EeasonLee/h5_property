@@ -1,0 +1,22 @@
+diff --git a/node_modules/uni-axios-ts/dist/index.d.ts b/node_modules/uni-axios-ts/dist/index.d.ts
+index 1d44958..713ccdd 100644
+--- a/node_modules/uni-axios-ts/dist/index.d.ts
++++ b/node_modules/uni-axios-ts/dist/index.d.ts
+@@ -35,7 +35,7 @@ interface ImplicitlyAny {
+ /**
+  * Axios 请求参数
+  */
+-interface AxiosRequestConfig {
++export interface AxiosRequestConfig {
+     [key: string]: any
+     baseURL?: string
+     url?: string
+@@ -50,7 +50,7 @@ interface AxiosRequestConfig {
+ /**
+  * Axios 响应参数
+  */
+-interface AxiosResponse<T = any> {
++export interface AxiosResponse<T = any> {
+     data: T // 服务端返回的数据
+     header: any // 响应头
+     statusCode: number // HTTP 状态码

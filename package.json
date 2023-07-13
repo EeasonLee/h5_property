@@ -52,6 +52,10 @@
     "@dcloudio/uni-mp-toutiao": "3.0.0-3080720230703001",
     "@dcloudio/uni-mp-weixin": "3.0.0-3080720230703001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-3080720230703001",
+    "patch-package": "^7.0.2",
+    "pinia": "^2.1.4",
+    "sass": "^1.63.6",
+    "uni-axios-ts": "^1.0.4",
     "vue": "^3.2.45",
     "vue-i18n": "^9.1.9"
   },
