@@ -1,0 +1,8 @@
+{
+    // 文件关联（json注释）
+    "files.associations": {
+        "pages.json": "jsonc",
+        "manifest.json": "jsonc"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
+}
