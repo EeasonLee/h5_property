@@ -8,28 +8,51 @@
       <image
         src="/static/login/logo.png"
         style="
-          width: 358rpx;
+          width: 346rpx;
           height: 384rpx;
           display: block;
           position: absolute;
-          left: -28rpx;
-          top: -70rpx;
+          left: -22rpx;
+          top: -74rpx;
         "
       />
     </view>
 
     <image
       src="/static/login/welcome.png"
-      style="width: 142rpx; height: 34rpx; display: block; margin-top: 18rpx"
+      style="width: 142rpx; height: 40rpx; display: block; margin-top: 18rpx; margin-bottom: 138rpx"
     />
 
-    <u-form labelPosition="left" :model="form" :rules="rules" ref="form">
-      <u-form-item labelWidth="80" label="手机号" prop="phone" borderBottom ref="item1">
-        <u-input v-model="form.phone" maxlength="11" placeholder="请填写手机号" border="none" />
+    <u-form labelPosition="left" :model="form" :rules="rules" ref="formRef">
+      <u-form-item labelWidth="0" label="" prop="phone" :borderBottom="false" ref="item1">
+        <u-input
+          v-model="form.phone"
+          maxlength="11"
+          placeholder="手机号"
+          border="none"
+          :customStyle="customStyle"
+          :placeholderStyle="placeholderStyle"
+        />
       </u-form-item>
-      <u-form-item label="验证码" prop="verificationCode" borderBottom labelWidth="80" ref="item1">
-        <u-input v-model="form.verificationCode" placeholder="请填写验证码" border="none">
-          <template slot="suffix">
+
+      <u-form-item
+        labelWidth="0"
+        label=""
+        prop="verificationCode"
+        :borderBottom="false"
+        orderBottom
+        ref="item1"
+        style="margin-top: 10rpx"
+      >
+        <u-input
+          v-model="form.verificationCode"
+          maxlength="6"
+          placeholder="验证码"
+          border="none"
+          :customStyle="customStyle"
+          :placeholderStyle="placeholderStyle"
+        >
+          <template #suffix>
             <u-button
               @click="getCode"
               :text="tips"
@@ -38,8 +61,11 @@
               :disabled="disabled"
               :hairline="false"
               :customStyle="{
-                background: '#5ac725 !important',
-                padding: '0 8px !important',
+                background: 'transparent !important',
+                padding: '4rpx 8rpx !important',
+                color: '#0D6FC9',
+                fontSize: '32rpx',
+                border: 'none',
               }"
             />
           </template>
@@ -47,33 +73,89 @@
       </u-form-item>
     </u-form>
 
-    <image
-      src="/static/login/login_button.png"
-      style="width: 426rpx; height: 94rpx; display: block; margin-top: 169rpx"
+    <u-button
+      class="u-reset-button"
+      style="margin-top: 169rpx"
+      hover-class="none"
+      :customStyle="{
+        background: 'transparent !important',
+        padding: '0 !important',
+        border: 'none',
+        height: 'auto',
+      }"
+      @click="login"
+      :throttleTime="2000"
+    >
+      <image
+        src="/static/login/login_button.png"
+        style="width: 426rpx; height: 94rpx; display: block"
+      />
+    </u-button>
+
+    <u-code
+      ref="uCodeRef"
+      @change="codeChange"
+      seconds="60"
+      @start="disabled = true"
+      @end="disabled = false"
     />
   </view>
 </template>
 
 <script setup lang="ts">
-  import ref from 'vue';
+  import { ref } from 'vue';
 
-  const form = ref();
-  const disabled = ref(true);
-  const tips = ref(true);
+  const form = ref({
+    phone: '',
+    verificationCode: '',
+  });
 
-  const getCode = () => {};
+  const login = () => {
+    formRef.value.validate().then(() => {
+      console.log(form.value);
+    });
+  };
+
+  const disabled = ref(false);
+  const tips = ref('发送验证码');
+  const uCodeRef = ref();
+  const formRef = ref();
+  const getCode = async () => {
+    if (form.value.phone.length < 11) {
+      formRef.value.validateField('phone');
+      return;
+    }
+    uCodeRef.value.start();
+  };
+  const codeChange = (text: string) => {
+    tips.value = text;
+  };
+
+  const customStyle = {
+    background: '#D2ECFF',
+    width: '640rpx',
+    height: '88rpx',
+    boxSizing: 'border-box',
+    borderRadius: '18rpx',
+    paddingInline: '30rpx',
+    marginBottom: '10rpx',
+  };
+
+  const placeholderStyle = {
+    color: '#6C6C6C',
+    fontSize: '32rpx',
+  };
 
   const rules = {
     phone: [
       {
         required: true,
         message: '请输入手机号',
-        trigger: ['change', 'blur'],
       },
       {
         validator: (_rule: any, value: any, _callback: any) => {
-          const isOk = uni.$u.test.mobile(value);
-          return isOk;
+          const isMobile = uni.$u.test.mobile(value);
+          return isMobile;
         },
         message: '手机号码不正确',
         trigger: ['change', 'blur'],
@@ -100,5 +182,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    :deep(.u-form-item__body) {
+      padding: 0;
+    }
+
+    :deep(.u-button__text) {
+      font-size: 32rpx !important;
+    }
   }
 </style>

@@ -4,5 +4,8 @@
         "pages.json": "jsonc",
         "manifest.json": "jsonc"
     },
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.words": [
+        "uview"
+    ]
 }
