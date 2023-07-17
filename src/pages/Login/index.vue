@@ -83,7 +83,7 @@
         border: 'none',
         height: 'auto',
       }"
-      @click="login"
+      @click="confirm"
       :throttleTime="2000"
     >
       <image
@@ -103,6 +103,7 @@
 </template>
 
 <script setup lang="ts">
+  import { getSmsCode, login } from '@/api/index';
   import { ref } from 'vue';
 
   const form = ref({
@@ -110,9 +111,15 @@
     verificationCode: '',
   });
 
-  const login = () => {
+  const confirm = () => {
     formRef.value.validate().then(() => {
       console.log(form.value);
+      login({
+        mobile: form.value.phone,
+        sms_code: form.value.verificationCode,
+      }).then((res) => {
+        console.log(res);
+      });
     });
   };
 
@@ -125,7 +132,10 @@
       formRef.value.validateField('phone');
       return;
     }
-    uCodeRef.value.start();
+    getSmsCode({ mobile: Number(form.value.phone) }).then((res) => {
+      console.log(res);
+      uCodeRef.value.start();
+    });
   };
   const codeChange = (text: string) => {
     tips.value = text;

@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'uni-axios-ts';
 
 const instance = axios.create({
-  baseURL: 'https://carewashing.api.nodewebapp.com/',
+  baseURL: 'http://cannon.kuwanxingqiu.com',
 });
 
 instance.interceptors.request.use((config) => {
@@ -24,9 +24,9 @@ instance.interceptors.response.use(
         icon: 'none',
       });
       throw Error('用户未登录或已过期');
-    } else if (response.data.code !== 0) {
+    } else if (response.data.code !== 1) {
       uni.showToast({
-        title: response.data.message,
+        title: response.data.msg,
         icon: 'none',
       });
       return Promise.reject(response.data);
