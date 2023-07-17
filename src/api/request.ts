@@ -7,7 +7,9 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   config.header = {
     ...config.header,
-    token: uni.getStorageSync('token'),
+    // token: uni.getStorageSync('token'),
+    token:
+      'cTdCU2lSaEdyQ0Z2RHh1RGRLWVo3OHRXNU8yS2k5bzB0ZTlOa2tIeUxKUlAzQjg3WlFZMjJVOVFiUFBTZUpZOE12RWdTWnNrNW5naVFzUnRUYThnL2c9PQ',
   };
   if (config.method === 'POST') config.header['Content-Type'] = 'application/json';
   return {
@@ -18,7 +20,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.data.code === 401) {
+    if (response.data.code === 1002) {
       uni.showToast({
         title: '用户未登录或已过期',
         icon: 'none',

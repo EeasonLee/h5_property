@@ -132,7 +132,7 @@
       formRef.value.validateField('phone');
       return;
     }
-    getSmsCode({ mobile: Number(form.value.phone) }).then((res) => {
+    getSmsCode({ mobile: form.value.phone }).then((res) => {
       console.log(res);
       uCodeRef.value.start();
     });
