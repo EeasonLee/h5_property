@@ -16,7 +16,14 @@
 		{
 			"path": "pages/Login/index",
 			"style": {
-				"navigationBarTitleText": "Login",
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/Upgrade/index",
+			"style": {
+				"navigationBarTitleText": "会员升级",
 				"navigationStyle": "custom"
 			}
 		}

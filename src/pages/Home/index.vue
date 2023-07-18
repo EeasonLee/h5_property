@@ -33,6 +33,7 @@
           <view class="info_item">
             <text> 会员等级：{{ userData?.grade_name }} </text>
             <image
+              @click="goUpgrade"
               src="@/static/home/升级.png"
               style="width: 86rpx; height: 52rpx; display: block"
             />
@@ -141,6 +142,9 @@
 
   const goLogin = () => {
     uni.navigateTo({ url: '/pages/Login/index' });
+  };
+  const goUpgrade = () => {
+    uni.navigateTo({ url: '/pages/Upgrade/index' });
   };
 </script>
 
