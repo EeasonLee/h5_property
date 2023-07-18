@@ -10,7 +10,7 @@
         :autoplay="false"
         indicatorStyle="bottom: 9rpx"
         @change="(e: any) => (current = e.current)"
-        @click="goLogin"
+        @click="goPage('/pages/Login/index')"
       >
         <template #indicator>
           <view class="indicator">
@@ -33,7 +33,7 @@
           <view class="info_item">
             <text> 会员等级：{{ userData?.grade_name }} </text>
             <image
-              @click="goUpgrade"
+              @click="goPage('/pages/Upgrade/index')"
               src="@/static/home/升级.png"
               style="width: 86rpx; height: 52rpx; display: block"
             />
@@ -41,6 +41,7 @@
           <view class="info_item">
             <text> 下线数：{{ userData?.below }} </text>
             <image
+              @click="goPage('/pages/Subordinate/index')"
               src="@/static/home/查看.png"
               style="width: 86rpx; height: 52rpx; display: block"
             />
@@ -140,11 +141,9 @@
 
   promotionLog({ type: promotionLogType.value }).then((res) => {});
 
-  const goLogin = () => {
-    uni.navigateTo({ url: '/pages/Login/index' });
-  };
-  const goUpgrade = () => {
-    uni.navigateTo({ url: '/pages/Upgrade/index' });
+  const goPage = (url: string) => {
+    if (!url) return;
+    uni.navigateTo({ url });
   };
 </script>
 

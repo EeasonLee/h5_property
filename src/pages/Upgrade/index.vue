@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <u-navbar :autoBack="true" bgColor="transparent" leftIconColor="#fff" placeholder>
+    <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
       <template #center>
         <image
           src="@/static/upgrade/会员升级.png"
@@ -96,6 +96,7 @@
 <style lang="scss" scoped>
   .page {
     min-height: 100vh;
+    padding-bottom: 25rpx;
     background: linear-gradient(0deg, #5980f9, #5b7ffb, #5b7ffb);
   }
   .title {

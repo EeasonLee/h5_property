@@ -26,6 +26,13 @@
 				"navigationBarTitleText": "会员升级",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/Subordinate/index",
+			"style": {
+				"navigationBarTitleText": "我的下级",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
