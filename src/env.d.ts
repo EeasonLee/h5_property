@@ -9,6 +9,8 @@ declare module '*.vue' {
 
 declare module 'uview-plus';
 
+declare module 'z-paging/components/z-paging/js/hooks/useZPaging.js';
+
 interface Uni {
   $u: any;
 }

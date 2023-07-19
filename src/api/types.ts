@@ -7,13 +7,28 @@ export interface Response<T> {
 export interface ResponsePage<T> {
   code: number; //	状态码	integer(int32)	integer(int32)
   data: {
-    pages: number; //		integer(int64)
-    size: number; //		integer(int64)
-    total: number; //		integer(int64)
-    records: T[];
+    /**
+     * 当前页
+     */
+    current_page: number;
+    /**
+     * 列表数据
+     */
+    data: [];
+    /**
+     * 最后一页
+     */
+    last_page: number;
+    /**
+     * 每页显示多少
+     */
+    per_page: number;
+    /**
+     * 总条数
+     */
+    total: number;
   }; //	结果集	CosCredentialVo	CosCredentialVo
-  message: string; //	状态文本	string
-  requestNo: string; //	请求流水号	string
+  msg: string; //	状态文本	string
 }
 
 export interface RequestPage {
@@ -64,4 +79,37 @@ export interface IUserInfo {
    * 今日推广人数
    */
   today_promotion: number;
+}
+
+export interface IPromotionLog {
+  /**
+   * 订单金额
+   */
+  amount: string;
+  /**
+   * 时间
+   */
+  create_time: string;
+  /**
+   * 下线会员等级
+   */
+  grade: string;
+  id: number;
+  /**
+   * 下线昵称
+   */
+  nickname: string;
+  /**
+   * 分佣金额
+   */
+  profit: string;
+  /**
+   * 分佣比例
+   */
+  ratio: string;
+  /**
+   * 类型
+   */
+  type: number;
+  update_time: string;
 }

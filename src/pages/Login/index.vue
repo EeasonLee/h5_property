@@ -46,7 +46,7 @@
       >
         <u-input
           v-model="form.verificationCode"
-          maxlength="6"
+          maxlength="4"
           placeholder="验证码"
           border="none"
           :customStyle="customStyle"
@@ -174,8 +174,8 @@
     verificationCode: {
       type: 'string',
       required: true,
-      len: 6,
-      message: '请填写6位验证码',
+      len: 4,
+      message: '请填写4位验证码',
       trigger: ['change', 'blur'],
     },
   };
