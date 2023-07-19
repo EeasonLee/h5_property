@@ -7,6 +7,8 @@ import type {
   ResponsePage,
   IPromotionLog,
   IGradeList,
+  IFromUserList,
+  IGetGradeList,
 } from './types';
 
 export const login = (data: ILogin) => {
@@ -30,8 +32,22 @@ export const promotionLog = (data: { type: 1 | 2; page: number }) => {
 };
 
 /**
+ * 我的下线
+ */
+export const fromUserList = (data: { grade_id?: number; page: number }) => {
+  return request.get<ResponsePage<IFromUserList[]>>('/api/user/fromUserList', data);
+};
+
+/**
  * 会员升级
  */
 export const gradeList = () => {
   return request.get<Response<IGradeList>>('/api/user/gradeList');
+};
+
+/**
+ * 会员升级
+ */
+export const getGradeList = () => {
+  return request.get<Response<IGetGradeList>>('/api/user/getGradeList');
 };

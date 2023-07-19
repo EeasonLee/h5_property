@@ -11,66 +11,80 @@
 
     <view class="flex-y-center" style="margin-top: 44rpx; margin-inline: 30rpx">
       <view class="title">查询：</view>
-      <view class="query" @click="show = true"> {{ currentLevel.label }} </view>
+      <view class="query" @click="show = true"> {{ gradeList[currentGradeListIndex].name }} </view>
     </view>
 
     <view class="table">
-      <view
-        class="table_item"
-        v-for="(item, index) in 5"
-        :key="index"
-        :style="{ border: index === 4 ? 'none' : '' }"
+      <z-paging
+        ref="paging"
+        v-model="dataList"
+        @query="queryList"
+        :refresher-enabled="false"
+        :default-page-size="10"
+        :fixed="false"
       >
-        <view class="flex-y-center-x-between table_item_1">
-          <view>下线昵称：土豆</view>
-          <view>20</view>
-        </view>
+        <view class="table_item" v-for="(item, index) in dataList" :key="index">
+          <view class="flex-y-center-x-between table_item_1">
+            <view style="font-weight: 400">{{ item.nickname }}</view>
+            <view>{{ item.total }}</view>
+          </view>
 
-        <view class="table_item_2">
-          <text>会员等级：无</text>
-          <text>税收：100</text>
-          <text>分成比例：20%</text>
+          <view class="table_item_2">
+            <text>{{ item.create_time }}</text>
+          </view>
         </view>
-
-        <view class="table_item_2">
-          <text>2023-10-22 23:25:56</text>
-        </view>
-      </view>
+      </z-paging>
     </view>
   </view>
 
   <u-picker
     :show="show"
-    :columns="columns"
-    keyName="label"
+    :columns="[gradeList]"
+    keyName="name"
     closeOnClickOverlay
     @close="show = false"
     @cancel="show = false"
     @confirm="selectLevel"
+    :defaultIndex="[currentGradeListIndex]"
   />
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { fromUserList, getGradeList } from '@/api';
+  import type { IFromUserList, IGetGradeList } from '@/api/types';
+  import { ref, watch } from 'vue';
 
   const show = ref(false);
-  const currentLevel = ref({ label: '雪月夜', id: 2021 });
-  const columns = [
-    [
-      {
-        label: '雪月夜',
-        id: 2021,
-      },
-      {
-        label: '冷夜雨',
-        id: 804,
-      },
-    ],
-  ];
+  const currentGradeListIndex = ref(0);
+  const gradeList = ref<IGetGradeList[]>([{ id: undefined, name: '全部' }] as IGetGradeList[]);
+
+  getGradeList().then((res) => {
+    gradeList.value.push(...res.data);
+  });
+
+  const paging = ref();
+  const dataList = ref<IFromUserList[]>();
+  const queryList = (pageNo: number) => {
+    fromUserList({ grade_id: gradeList.value[currentGradeListIndex.value].id, page: pageNo })
+      .then((res) => {
+        paging.value.complete(res.data.data);
+      })
+      .catch(() => {
+        paging.value.complete(false);
+      });
+  };
+
+  // 刷新列表
+  const refresh = () => {
+    paging.value.reload();
+  };
+
+  watch(currentGradeListIndex, (newValue) => {
+    refresh();
+  });
 
   const selectLevel = (e: any) => {
-    console.log(e.value[0]);
-    currentLevel.value = e.value[0];
+    currentGradeListIndex.value = e.indexs[0];
     show.value = false;
   };
 </script>
@@ -78,8 +92,9 @@
 <style lang="scss" scoped>
   .page {
     min-height: 100vh;
-    padding-bottom: 25rpx;
     background: linear-gradient(0deg, #5980f9, #5b7ffb, #5b7ffb);
+    display: flex;
+    flex-direction: column;
   }
   .title {
     font-size: 32rpx;
@@ -107,6 +122,18 @@
     background: #d2ecff;
     border-radius: 14rpx;
     margin-top: 18rpx;
+
+    margin-bottom: 25rpx;
+    flex-grow: 1; //自适应屏幕剩下的高度
+    height: 731rpx;
+    // 如果你没有设置height: 0px;
+    // 而且div元素的内容高度不超过默认的高度，那么它可能会继续占据默认的高度，从而导致其他具有flex-grow属性的元素无法显示。
+    // 通过设置height: 0px;
+    // 你可以确保div元素在flexbox布局中正确地分配和填充剩余的空间。
+
+    :last-child {
+      border-bottom: 0;
+    }
 
     &_item {
       padding: 30rpx;

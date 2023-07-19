@@ -141,3 +141,24 @@ export interface IGradeList {
     price: number;
   }[];
 }
+
+export interface IFromUserList {
+  /**
+   * 时间
+   */
+  create_time: string;
+  /**
+   * 昵称
+   */
+  nickname: string;
+  /**
+   * 总计
+   */
+  total: string;
+}
+
+export interface IGetGradeList {
+  id?: number;
+  name: string;
+  [Symbol.iterator](): Iterator<any>;
+}

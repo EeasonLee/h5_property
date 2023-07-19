@@ -107,7 +107,7 @@
       >
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
-            <view>下线昵称：{{ item.nickname }}</view>
+            <view style="font-weight: 400">下线昵称：{{ item.nickname }}</view>
             <view>{{ item.amount }}</view>
           </view>
 
@@ -253,7 +253,7 @@
     margin-top: -3rpx;
     margin-bottom: 25rpx;
     flex-grow: 1; //自适应屏幕剩下的高度
-    height: 0px;
+    height: 731rpx;
     // 如果你没有设置height: 0px;
     // 而且div元素的内容高度不超过默认的高度，那么它可能会继续占据默认的高度，从而导致其他具有flex-grow属性的元素无法显示。
     // 通过设置height: 0px;
