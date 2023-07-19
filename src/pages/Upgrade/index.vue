@@ -9,7 +9,7 @@
       </template>
     </u-navbar>
 
-    <view class="title" style="margin-top: 44rpx">当前会员等级：{{ '代理人' }}</view>
+    <view class="title" style="margin-top: 44rpx">当前会员等级：{{ data?.grade }}</view>
 
     <view class="tableBox">
       <table class="table">
@@ -18,60 +18,18 @@
           <td>充值金额</td>
           <td>操作</td>
         </tr>
-        <tr>
-          <td>VIP会员</td>
-          <td>99</td>
+        <tr v-for="(item, index) in data?.list" :key="index">
+          <td>{{ item.name }}</td>
+          <td>{{ item.price }}</td>
           <td>
             <view class="flex-y-center-x-center">
               <image
+                v-if="index < 3"
                 src="@/static/upgrade/去充值.png"
                 style="width: 156rpx; height: 52rpx; display: block"
               />
-            </view>
-          </td>
-        </tr>
-        <tr>
-          <td>代理人</td>
-          <td>648(可累计)</td>
-          <td>
-            <view class="flex-y-center-x-center">
               <image
-                src="@/static/upgrade/去充值.png"
-                style="width: 156rpx; height: 52rpx; display: block"
-              />
-            </view>
-          </td>
-        </tr>
-        <tr>
-          <td>合伙人</td>
-          <td>1949</td>
-          <td>
-            <view class="flex-y-center-x-center">
-              <image
-                src="@/static/upgrade/去充值.png"
-                style="width: 156rpx; height: 52rpx; display: block"
-              />
-            </view>
-          </td>
-        </tr>
-        <tr>
-          <td>联合创始人</td>
-          <td>20000</td>
-          <td>
-            <view class="flex-y-center-x-center">
-              <image
-                src="@/static/upgrade/请联系商务.png"
-                style="width: 156rpx; height: 52rpx; display: block"
-              />
-            </view>
-          </td>
-        </tr>
-        <tr>
-          <td>董事</td>
-          <td>暂未开放</td>
-          <td>
-            <view class="flex-y-center-x-center">
-              <image
+                v-else
                 src="@/static/upgrade/请联系商务.png"
                 style="width: 156rpx; height: 52rpx; display: block"
               />
@@ -91,7 +49,16 @@
   </view>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { gradeList } from '@/api';
+  import type { IGradeList } from '@/api/types';
+  import { ref } from 'vue';
+
+  const data = ref<IGradeList>();
+  gradeList().then((res) => {
+    data.value = res.data;
+  });
+</script>
 
 <style lang="scss" scoped>
   .page {

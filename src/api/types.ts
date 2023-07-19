@@ -93,7 +93,7 @@ export interface IPromotionLog {
   /**
    * 下线会员等级
    */
-  grade: string;
+  from_user_grade: string;
   id: number;
   /**
    * 下线昵称
@@ -112,4 +112,32 @@ export interface IPromotionLog {
    */
   type: number;
   update_time: string;
+}
+
+export interface IGradeList {
+  /**
+   * 当前会员等级
+   */
+  grade: string;
+  /**
+   * 会员权益说明图
+   */
+  image: string;
+  /**
+   * 会员等级
+   */
+  list: {
+    /**
+     * ID
+     */
+    id: number;
+    /**
+     * 等级名称
+     */
+    name: string;
+    /**
+     * 价格
+     */
+    price: number;
+  }[];
 }

@@ -6,6 +6,7 @@ import type {
   IUserInfo,
   ResponsePage,
   IPromotionLog,
+  IGradeList,
 } from './types';
 
 export const login = (data: ILogin) => {
@@ -26,4 +27,11 @@ export const userInfo = () => {
  */
 export const promotionLog = (data: { type: 1 | 2; page: number }) => {
   return request.get<ResponsePage<IPromotionLog[]>>('/api/user/promotionLog', data);
+};
+
+/**
+ * 会员升级
+ */
+export const gradeList = () => {
+  return request.get<Response<IGradeList>>('/api/user/gradeList');
 };
