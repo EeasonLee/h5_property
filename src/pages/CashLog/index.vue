@@ -3,7 +3,7 @@
     <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
       <template #center>
         <image
-          src="@/static/title/我的下线.png"
+          src="@/static/title/提款记录.png"
           style="width: 149rpx; height: 43rpx; display: block"
         />
       </template>
@@ -11,7 +11,7 @@
 
     <view class="flex-y-center" style="margin-top: 44rpx; margin-inline: 30rpx">
       <view class="title">查询：</view>
-      <view class="query" @click="show = true"> {{ gradeList[currentGradeListIndex].name }} </view>
+      <view class="query" @click="show = true"> {{ time || '全部' }} </view>
     </view>
 
     <view class="table">
@@ -25,51 +25,53 @@
       >
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
-            <view style="font-weight: 400">{{ item.nickname }}</view>
-            <view>{{ item.total }}</view>
+            <view style="font-weight: 400">银行卡：{{ item.bank_name }}</view>
+            <view>{{ item.amount }}</view>
           </view>
 
           <view class="table_item_2">
-            <text>{{ item.create_time }}</text>
+            <text>卡号：{{ item.bank_no }}</text>
+          </view>
+
+          <view class="table_item_2 flex-y-center-x-between">
+            <view>{{ item.create_time }}</view>
+            <view :style="{ color: color(item.status) }">{{ item.status_val }}</view>
+          </view>
+
+          <view class="table_item_2" v-if="item.remark">
+            <text style="color: #dd4343">备注：{{ item.remark }}</text>
           </view>
         </view>
       </z-paging>
     </view>
   </view>
 
-  <u-picker
+  <u-datetime-picker
     :show="show"
-    :columns="[gradeList]"
-    keyName="name"
-    closeOnClickOverlay
+    mode="year-month"
+    v-model="value"
     @close="show = false"
-    @cancel="show = false"
-    @confirm="selectLevel"
-    :defaultIndex="[currentGradeListIndex]"
+    @cancel="(show = false), (time = undefined)"
+    @confirm="selectTime"
   />
 </template>
 
 <script setup lang="ts">
-  import { fromUserList, getGradeList } from '@/api';
-  import type { IFromUserList, IGetGradeList } from '@/api/types';
+  import { cashLog } from '@/api';
   import { ref, watch } from 'vue';
+  import dayjs from 'dayjs';
+  import type { ICashLog } from '@/api/types';
+  import { computed } from 'vue';
 
   const show = ref(false);
-  const currentGradeListIndex = ref(0);
-  const gradeList = ref<IGetGradeList[]>([{ id: undefined, name: '全部' }] as IGetGradeList[]);
-
-  getGradeList().then((res) => {
-    gradeList.value.push(...res.data);
-  });
+  const value = ref(Number(new Date()));
+  const time = ref();
 
   const paging = ref();
-  const dataList = ref<IFromUserList[]>();
+  const dataList = ref<ICashLog[]>();
   const queryList = (pageNo: number) => {
-    fromUserList({ grade_id: gradeList.value[currentGradeListIndex.value].id, page: pageNo })
+    cashLog({ time: time.value, page: pageNo })
       .then((res) => {
-        if (!gradeList.value[currentGradeListIndex.value].id) {
-          gradeList.value[0].name = `全部(${res.data.total})`;
-        }
         paging.value.complete(res.data.data);
       })
       .catch(() => {
@@ -82,13 +84,29 @@
     paging.value.reload();
   };
 
-  watch(currentGradeListIndex, (newValue) => {
+  watch(time, (newValue) => {
     refresh();
   });
 
-  const selectLevel = (e: any) => {
-    currentGradeListIndex.value = e.indexs[0];
+  const selectTime = (e: any) => {
+    time.value = dayjs(e.value).format('YYYY-MM');
+    value.value = e.value;
     show.value = false;
+  };
+
+  const color = (status: number) => {
+    // 0失败 1提现中 2成功
+    switch (status) {
+      case 0:
+        return '#DD4343';
+      case 1:
+        return '#0D6FC9';
+      case 2:
+        return '#0FA200';
+
+      default:
+        return '#6c6c6c';
+    }
   };
 </script>
 

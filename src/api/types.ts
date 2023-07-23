@@ -162,3 +162,34 @@ export interface IGetGradeList {
   name: string;
   [Symbol.iterator](): Iterator<any>;
 }
+
+export interface ICashLog {
+  /**
+   * 提现金额
+   */
+  amount: string;
+  /**
+   * 开户行
+   */
+  bank_name: string;
+  /**
+   * 银行卡号
+   */
+  bank_no: number;
+  /**
+   * 提现时间
+   */
+  create_time: string;
+  id: number;
+  /**
+   * 提现失败备注
+   */
+  remark: null;
+  /**
+   * 状态0提现失败 1提现中 2提现失败
+   */
+  status: 0 | 1 | 2;
+  status_val: string;
+  uid: number;
+  update_time: string;
+}

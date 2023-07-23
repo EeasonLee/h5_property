@@ -72,7 +72,9 @@
             src="@/static/home/我要提现.png"
             style="width: 156rpx; height: 52rpx; display: block"
           />
+
           <image
+            @click="goPage('/pages/CashLog/index')"
             src="@/static/home/提款记录.png"
             style="width: 156rpx; height: 52rpx; display: block; margin-left: 4rpx"
           />

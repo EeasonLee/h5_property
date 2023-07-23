@@ -9,6 +9,7 @@ import type {
   IGradeList,
   IFromUserList,
   IGetGradeList,
+  ICashLog,
 } from './types';
 
 export const login = (data: ILogin) => {
@@ -46,8 +47,15 @@ export const gradeList = () => {
 };
 
 /**
- * 会员升级
+ * 下线会员等级数量
  */
 export const getGradeList = () => {
-  return request.get<Response<IGetGradeList>>('/api/user/getGradeList');
+  return request.get<Response<IGetGradeList[]>>('/api/user/getGradeList');
+};
+
+/**
+ * 提现记录
+ */
+export const cashLog = (data: { time?: string; page: number }) => {
+  return request.get<ResponsePage<ICashLog>>('/api/user/cashLog', data);
 };
