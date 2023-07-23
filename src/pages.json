@@ -41,6 +41,20 @@
 				"navigationBarTitleText": "提现记录",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/Cash/index",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/BindCard/index",
+			"style": {
+				"navigationBarTitleText": "绑定银行卡",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {

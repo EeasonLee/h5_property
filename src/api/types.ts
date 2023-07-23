@@ -193,3 +193,22 @@ export interface ICashLog {
   uid: number;
   update_time: string;
 }
+
+export interface ICashPageData {
+  /**
+   * 余额
+   */
+  amount: number;
+  /**
+   * 开户行
+   */
+  bank_name: string;
+  /**
+   * 银行卡号
+   */
+  bank_no: number;
+  /**
+   * 真是名称
+   */
+  name: string;
+}

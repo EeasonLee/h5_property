@@ -10,6 +10,7 @@ import type {
   IFromUserList,
   IGetGradeList,
   ICashLog,
+  ICashPageData,
 } from './types';
 
 export const login = (data: ILogin) => {
@@ -58,4 +59,28 @@ export const getGradeList = () => {
  */
 export const cashLog = (data: { time?: string; page: number }) => {
   return request.get<ResponsePage<ICashLog>>('/api/user/cashLog', data);
+};
+
+/**
+ * 提现页面数据
+ */
+export const getCashPageData = () => {
+  return request.get<Response<ICashPageData>>('/api/user/cashPageData');
+};
+
+/**
+ * 绑定银行卡
+ */
+export const bindCard = (data: {
+  bank_name: string;
+  /**
+   * 银行卡号
+   */
+  bank_no: number;
+  /**
+   * 真实姓名
+   */
+  name: string;
+}) => {
+  return request.post<Response<any>>('/api/user/bindCard', data);
 };

@@ -69,6 +69,7 @@
           <text> 可提款： </text>
           <text style="color: #ffeb7f">{{ userData?.amount }}</text>
           <image
+            @click="goPage('/pages/Cash/index')"
             src="@/static/home/我要提现.png"
             style="width: 156rpx; height: 52rpx; display: block"
           />
@@ -162,8 +163,6 @@
   watch(promotionLogType, (newValue) => {
     refresh();
   });
-
-  // promotionLog({ type: promotionLogType.value }).then((res) => {});
 
   const goPage = (url: string) => {
     if (!url) return;

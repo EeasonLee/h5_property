@@ -32,6 +32,7 @@
           border="none"
           :customStyle="customStyle"
           :placeholderStyle="placeholderStyle"
+          type="number"
         />
       </u-form-item>
 
@@ -51,6 +52,7 @@
           border="none"
           :customStyle="customStyle"
           :placeholderStyle="placeholderStyle"
+          type="number"
         >
           <template #suffix>
             <u-button
