@@ -7,10 +7,9 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   config.header = {
     ...config.header,
-    // token: uni.getStorageSync('token'),
-    token:
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjg5NjY2Mjc5LCJuYmYiOjE2ODk2NjYyNzksImV4cCI6MTY5MDI3MTA3OSwidXNlcl9pZCI6MX0.rasdqFPtGSk78gpu2gk5pgZJTGGxn57VhD5zUZ3cshk',
-    // 'cTdCU2lSaEdyQ0Z2RHh1RGRLWVo3OHRXNU8yS2k5bzB0ZTlOa2tIeUxKUlAzQjg3WlFZMjJVOVFiUFBTZUpZOE12RWdTWnNrNW5naVFzUnRUYThnL2c9PQ',
+    token: uni.getStorageSync('token'),
+    // token:
+    //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjg5NjY2Mjc5LCJuYmYiOjE2ODk2NjYyNzksImV4cCI6MTY5MDI3MTA3OSwidXNlcl9pZCI6MX0.rasdqFPtGSk78gpu2gk5pgZJTGGxn57VhD5zUZ3cshk',
   };
   if (config.method === 'POST') config.header['Content-Type'] = 'application/json';
   return {
@@ -26,6 +25,7 @@ instance.interceptors.response.use(
         title: response.data.msg || '未登录或登录已过期 ',
         icon: 'none',
       });
+      uni.reLaunch({ url: '/pages/Login/index' });
       throw Error(response.data.msg || '未登录或登录已过期 ');
     } else if (response.data.code !== 1) {
       uni.showToast({

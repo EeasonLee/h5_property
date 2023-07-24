@@ -84,3 +84,10 @@ export const bindCard = (data: {
 }) => {
   return request.post<Response<any>>('/api/user/bindCard', data);
 };
+
+/**
+ * 提现
+ */
+export const cash = (data: { money: number }) => {
+  return request.post<Response<any>>('/api/user/cash', data);
+};

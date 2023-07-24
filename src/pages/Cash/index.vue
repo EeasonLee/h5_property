@@ -59,7 +59,6 @@
           height: 'auto',
         }"
         @click="confirm"
-        :throttleTime="2000"
       >
         <image
           src="@/static/cash/确认提现.png"
@@ -85,14 +84,24 @@
       src="@/static/cash/银行卡.png"
       style="width: 700rpx; height: 436rpx; display: block; position: absolute; bottom: 0; right: 0"
     />
+
+    <Modal
+      :showModal.sync="showModal"
+      :backgroundImage="bg"
+      :money="money"
+      @cancel="showModal = false"
+      @closeModal="showModal = false"
+      @confirm="submit"
+    />
   </view>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { getCashPageData } from '@/api';
+  import { cash, getCashPageData } from '@/api';
   import type { ICashPageData } from '@/api/types';
   import { onShow } from '@dcloudio/uni-app';
+  import bg from '@/static/cash/model_bg.png';
 
   onShow(() => {
     getData();
@@ -100,8 +109,30 @@
 
   const money = ref();
   const data = ref<ICashPageData>();
+  const showModal = ref(false);
   const confirm = () => {
-    console.log(money.value);
+    if (!money.value) {
+      showToast('请输入提现金额');
+      return;
+    }
+    if (money.value < 100) {
+      showToast('提现金额不能低于100元');
+      return;
+    }
+    showModal.value = true;
+  };
+  const submit = () => {
+    cash({ money: money.value }).then(() => {
+      showToast('提现成功');
+      uni.navigateBack();
+    });
+  };
+
+  const showToast = (text: string) => {
+    uni.showToast({
+      title: text,
+      icon: 'none',
+    });
   };
 
   const getData = () => {
@@ -110,12 +141,14 @@
         if (!res.data.bank_no) {
           uni.showModal({
             title: '提示',
-            content: '这是一个模态弹窗',
+            content: '您还没有绑定银行卡\n请先绑定银行卡后提现',
             success: function (res) {
               if (res.confirm) {
                 console.log('用户点击确定');
+                goPage('/pages/BindCard/index');
               } else if (res.cancel) {
                 console.log('用户点击取消');
+                uni.navigateBack();
               }
             },
           });

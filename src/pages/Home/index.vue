@@ -10,7 +10,6 @@
         :autoplay="false"
         indicatorStyle="bottom: 9rpx"
         @change="(e: any) => (current = e.current)"
-        @click="goPage('/pages/Login/index')"
       >
         <template #indicator>
           <view class="indicator">
