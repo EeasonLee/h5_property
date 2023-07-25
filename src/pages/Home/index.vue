@@ -132,9 +132,10 @@
   import { userInfo, promotionLog } from '@/api';
   import { ref, watch } from 'vue';
   import type { IUserInfo, IPromotionLog } from '@/api/types';
+  import banner1 from '@/static/home/banner.png';
 
   const current = ref(0);
-  const banner = ['/src/static/home/banner.png', '/src/static/home/banner.png'];
+  const banner = [banner1];
   const userData = ref<IUserInfo>();
   const promotionLogType = ref<1 | 2>(1);
 
