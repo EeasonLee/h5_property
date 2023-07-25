@@ -120,8 +120,6 @@
         mobile: form.value.phone,
         sms_code: form.value.verificationCode,
       }).then((res) => {
-        console.log(res);
-        uni.setStorageSync('token', res.data);
         uni.reLaunch({ url: '/pages/Home/index' });
       });
     });

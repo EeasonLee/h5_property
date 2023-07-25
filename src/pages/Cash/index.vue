@@ -28,17 +28,17 @@
       </view>
 
       <view style="font-size: 26rpx; color: #000; margin: 8rpx 230rpx">
-        当前余额为：{{ data?.amount }}
+        当前余额为：{{ data?.amount || 0 }}
       </view>
 
       <view class="flex-y-center" style="margin-top: 27rpx">
         <view class="text table">姓名：</view>
-        <view class="text">{{ data?.name }}</view>
+        <view class="text">{{ data?.name || '请先绑定银行卡' }}</view>
       </view>
 
       <view class="flex-y-center" style="margin-top: 60rpx">
         <view class="text table"> 提现银行卡： </view>
-        <view class="text">{{ data?.bank_no }}</view>
+        <view class="text">{{ data?.bank_no || '请先绑定银行卡' }}</view>
       </view>
 
       <view
@@ -111,6 +111,10 @@
   const data = ref<ICashPageData>();
   const showModal = ref(false);
   const confirm = () => {
+    if (!data.value?.bank_no) {
+      showToast('请先绑定银行卡');
+      return;
+    }
     if (!money.value) {
       showToast('请输入提现金额');
       return;
@@ -136,28 +140,27 @@
   };
 
   const getData = () => {
-    getCashPageData()
-      .then((res) => {
-        if (!res.data.bank_no) {
-          uni.showModal({
-            title: '提示',
-            content: '您还没有绑定银行卡\n请先绑定银行卡后提现',
-            success: function (res) {
-              if (res.confirm) {
-                console.log('用户点击确定');
-                goPage('/pages/BindCard/index');
-              } else if (res.cancel) {
-                console.log('用户点击取消');
-                uni.navigateBack();
-              }
-            },
-          });
-        }
-        data.value = res.data;
-      })
-      .catch(() => {
-        goPage('/pages/BindCard/index');
-      });
+    getCashPageData().then((res) => {
+      if (!res.data.bank_no) {
+        uni.showModal({
+          title: '提示',
+          content: '您还没有绑定银行卡\n请先绑定银行卡后提现',
+          success: function (res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              goPage('/pages/BindCard/index');
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              uni.navigateBack();
+            }
+          },
+        });
+      }
+      data.value = res.data;
+    });
+    // .catch(() => {
+    //   goPage('/pages/BindCard/index');
+    // });
   };
 
   const formatting = (e: string) => {
