@@ -4,7 +4,7 @@
       <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
         <template #center>
           <image
-            src="@/static/title/我要提现.png"
+            src="@/static/title/woyaotixian.png"
             style="width: 150rpx; height: 42rpx; display: block"
           />
         </template>
@@ -61,7 +61,7 @@
         @click="confirm"
       >
         <image
-          src="@/static/cash/确认提现.png"
+          src="@/static/cash/qurentixian.png"
           style="width: 426rpx; height: 94rpx; display: block"
         />
       </u-button>
@@ -81,7 +81,7 @@
       </view>
     </view>
     <image
-      src="@/static/cash/银行卡.png"
+      src="@/static/cash/yinhangka.png"
       style="width: 700rpx; height: 436rpx; display: block; position: absolute; bottom: 0; right: 0"
     />
 

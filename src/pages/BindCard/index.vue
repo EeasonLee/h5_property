@@ -4,7 +4,7 @@
       <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
         <template #center>
           <image
-            src="@/static/title/绑定银行卡.png"
+            src="@/static/title/bangding.png"
             style="width: 150rpx; height: 42rpx; display: block"
           />
         </template>
@@ -74,7 +74,7 @@
       </u-button>
     </view>
     <image
-      src="@/static/cash/银行卡.png"
+      src="@/static/cash/yinhangka.png"
       style="width: 700rpx; height: 436rpx; display: block; position: absolute; bottom: 0; right: 0"
     />
   </view>

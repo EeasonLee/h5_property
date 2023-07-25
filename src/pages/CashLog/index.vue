@@ -3,7 +3,7 @@
     <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
       <template #center>
         <image
-          src="@/static/title/提款记录.png"
+          src="@/static/title/tikuanjilu.png"
           style="width: 149rpx; height: 43rpx; display: block"
         />
       </template>

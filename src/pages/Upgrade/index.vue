@@ -3,7 +3,7 @@
     <u-navbar :autoBack="true" bgColor="#5980f9" leftIconColor="#fff" placeholder>
       <template #center>
         <image
-          src="@/static/upgrade/会员升级.png"
+          src="@/static/upgrade/huiyuanshengji.png"
           style="width: 150rpx; height: 42rpx; display: block"
         />
       </template>
@@ -25,12 +25,12 @@
             <view class="flex-y-center-x-center">
               <image
                 v-if="index < 3"
-                src="@/static/upgrade/去充值.png"
+                src="@/static/upgrade/quchongzhi.png"
                 style="width: 156rpx; height: 52rpx; display: block"
               />
               <image
                 v-else
-                src="@/static/upgrade/请联系商务.png"
+                src="@/static/upgrade/shangwu.png"
                 style="width: 156rpx; height: 52rpx; display: block"
               />
             </view>
@@ -42,7 +42,7 @@
     <view class="title" style="margin-top: 44rpx">会员权益的图片说明</view>
 
     <image
-      src="@/static/upgrade/海报.png"
+      src="@/static/upgrade/haibao.png"
       mode="widthFix"
       style="width: 700rpx; display: block; margin-inline: 25rpx; margin-top: 14rpx"
     />

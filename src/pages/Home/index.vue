@@ -32,7 +32,7 @@
           <text> 会员等级：{{ userData?.grade_name }} </text>
           <image
             @click="goPage('/pages/Upgrade/index')"
-            src="@/static/home/升级.png"
+            src="@/static/home/shengji.png"
             style="width: 86rpx; height: 52rpx; display: block"
           />
         </view>
@@ -40,7 +40,7 @@
           <text> 下线数：{{ userData?.below }} </text>
           <image
             @click="goPage('/pages/Subordinate/index')"
-            src="@/static/home/查看.png"
+            src="@/static/home/chakan.png"
             style="width: 86rpx; height: 52rpx; display: block"
           />
         </view>
@@ -69,13 +69,13 @@
           <text style="color: #ffeb7f">{{ userData?.amount }}</text>
           <image
             @click="goPage('/pages/Cash/index')"
-            src="@/static/home/我要提现.png"
+            src="@/static/home/woyaotixian.png"
             style="width: 156rpx; height: 52rpx; display: block"
           />
 
           <image
             @click="goPage('/pages/CashLog/index')"
-            src="@/static/home/提款记录.png"
+            src="@/static/home/tikuanjilu.png"
             style="width: 156rpx; height: 52rpx; display: block; margin-left: 4rpx"
           />
         </view>

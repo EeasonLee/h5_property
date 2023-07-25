@@ -3,13 +3,13 @@
     <div class="modal-background"></div>
     <div class="modal-content" :style="{ backgroundImage: 'url(' + backgroundImage + ')' }">
       <image
-        src="@/static/cash/提款.png"
+        src="@/static/cash/tikuan.png"
         style="width: 78rpx; height: 43rpx; display: block; margin-top: 10rpx"
       />
 
       <image
         @click="closeModal"
-        src="@/static/cash/关闭按钮.png"
+        src="@/static/cash/guanbianniu.png"
         style="
           width: 40rpx;
           height: 40rpx;
@@ -42,7 +42,7 @@
           :throttleTime="2000"
         >
           <image
-            src="@/static/cash/确认.png"
+            src="@/static/cash/queren.png"
             style="width: 186rpx; height: 66rpx; display: block"
           />
         </u-button>
@@ -59,7 +59,7 @@
           @click="cancel"
         >
           <image
-            src="@/static/cash/取消.png"
+            src="@/static/cash/quxiao.png"
             style="width: 186rpx; height: 66rpx; display: block"
           />
         </u-button>
