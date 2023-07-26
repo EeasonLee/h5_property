@@ -36,7 +36,8 @@
     "build:quickapp-webview": "uni build -p quickapp-webview",
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-3080720230703001",
@@ -52,6 +53,7 @@
     "@dcloudio/uni-mp-toutiao": "3.0.0-3080720230703001",
     "@dcloudio/uni-mp-weixin": "3.0.0-3080720230703001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-3080720230703001",
+    "axios": "^1.4.0",
     "dayjs": "^1.11.9",
     "patch-package": "^7.0.2",
     "sass": "^1.63.6",

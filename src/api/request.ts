@@ -1,16 +1,34 @@
 import axios, { type AxiosRequestConfig } from 'uni-axios-ts';
+// #ifdef H5
+import axiosH5 from 'axios';
+// #endif
 
-const instance = axios.create({
-  baseURL: 'http://cannon.kuwanxingqiu.com',
+export const baseURL = 'https://cannon.kuwanxingqiu.com'; // 域名正式环境
+
+let instance = axios.create({
+  baseURL: baseURL,
 });
+
+// #ifdef H5
+// @ts-ignore
+instance = axiosH5.create({
+  baseURL: baseURL,
+});
+// #endif
 
 instance.interceptors.request.use((config) => {
   config.header = {
     ...config.header,
     token: uni.getStorageSync('token'),
-    // token:
-    // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkwMjg2NTUxLCJuYmYiOjE2OTAyODY1NTEsImV4cCI6MTY5MDg5MTM1MSwidXNlcl9pZCI6NH0.ilp4RIV7bzWrIN1jnOjF_vYnWN7ZdHmib6UzOOEye9c',
   };
+
+  // #ifdef H5
+  config.headers = {
+    ...config.headers,
+    token: uni.getStorageSync('token'),
+  };
+  // #endif
+
   if (config.method === 'POST') config.header['Content-Type'] = 'application/json';
   return {
     ...config,
@@ -20,9 +38,13 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.header.token) {
-      uni.setStorageSync('token', response.header.token);
+    // #ifdef H5
+    // @ts-ignore
+    if (response.headers?.token) {
+      // @ts-ignore
+      uni.setStorageSync('token', response.headers.token);
     }
+    // #endif
 
     if (response.data.code === 1002) {
       uni.showToast({
