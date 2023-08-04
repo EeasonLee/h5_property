@@ -80,6 +80,18 @@
           />
         </view>
       </view>
+
+      <view class="info">
+        <view class="info_item">
+          <text> 我的累计充值：{{ userData?.sum_recharge }} </text>
+        </view>
+      </view>
+
+      <view class="info">
+        <view class="info_item">
+          <text> 团队累计充值：{{ userData?.add_recharge }} </text>
+        </view>
+      </view>
     </view>
 
     <view style="display: flex; align-items: center; margin-left: 43rpx; margin-top: 39rpx">
@@ -87,14 +99,15 @@
         class="tabs"
         :class="promotionLogType == 1 && 'tabs_active'"
         @click="promotionLogType = 1"
-        >税收奖励
+      >
+        推广奖励
       </view>
       <view
         class="tabs"
         :class="promotionLogType == 2 && 'tabs_active'"
         @click="promotionLogType = 2"
       >
-        推广奖励
+        税收奖励
       </view>
     </view>
 
@@ -109,14 +122,14 @@
       >
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
-            <view style="font-weight: 400">下线昵称：{{ item.nickname }}</view>
+            <view style="font-weight: 400">下线手机号：{{ item.partner_phone }}</view>
             <view>{{ item.amount }}</view>
           </view>
 
           <view class="table_item_2">
-            <text>会员等级：{{ item.from_user_grade }}</text>
-            <text>税收：{{ item.profit }}</text>
-            <text>分成比例：{{ Number(item.ratio) * 100 + '%' }}</text>
+            <view>会员等级：{{ item.from_user_grade }}</view>
+            <view>税收：{{ item.profit }}</view>
+            <view>分成比例：{{ Number(item.ratio) * 100 + '%' }}</view>
           </view>
 
           <view class="table_item_2">
@@ -224,7 +237,7 @@
   }
 
   .tabs {
-    font-size: 28rpx;
+    font-size: 24rpx;
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #ffffff;
@@ -235,7 +248,7 @@
     z-index: 99;
 
     &_active {
-      font-size: 32rpx;
+      font-size: 28rpx;
       line-height: 52rpx;
       border-radius: 14rpx 14rpx 0 0;
       border: 3rpx solid #386bb1;

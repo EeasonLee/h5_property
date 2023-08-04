@@ -1,35 +1,18 @@
-import axios, { type AxiosRequestConfig } from 'uni-axios-ts';
-// #ifdef H5
-import axiosH5 from 'axios';
-// #endif
+import axios, { type AxiosRequestConfig } from 'axios';
 
-export const baseURL = 'https://cannon.kuwanxingqiu.com'; // 域名正式环境
+const baseURL = 'https://cannon.kuwanxingqiu.com/';
 
-let instance = axios.create({
+const instance = axios.create({
   baseURL: baseURL,
 });
-
-// #ifdef H5
-// @ts-ignore
-instance = axiosH5.create({
-  baseURL: baseURL,
-});
-// #endif
 
 instance.interceptors.request.use((config) => {
-  config.header = {
-    ...config.header,
-    token: uni.getStorageSync('token'),
-  };
+  config.headers.token = uni.getStorageSync('token');
+  // config.headers.token =
+  //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkxMTUzNTY4LCJuYmYiOjE2OTExNTM1NjgsImV4cCI6MTY5MTc1ODM2OCwidXNlcl9pZCI6MX0.ikRMhS4rw5ubTedh4GfCZoz-_T9MgerNM4Ymmw37UtM';
 
-  // #ifdef H5
-  config.headers = {
-    ...config.headers,
-    token: uni.getStorageSync('token'),
-  };
-  // #endif
+  if (config.method === 'POST') config.headers['Content-Type'] = 'application/json';
 
-  if (config.method === 'POST') config.header['Content-Type'] = 'application/json';
   return {
     ...config,
     params: { ...config.params },
@@ -40,7 +23,7 @@ instance.interceptors.response.use(
   (response) => {
     // #ifdef H5
     // @ts-ignore
-    if (response.headers?.token) {
+    if (response?.headers?.token) {
       // @ts-ignore
       uni.setStorageSync('token', response.headers.token);
     }
@@ -67,23 +50,28 @@ instance.interceptors.response.use(
     }
   },
   (err) => {
-    if (err.statusCode === 1001) {
-      uni.showToast({
-        title: '连接服务器异常',
-        icon: 'none',
-      });
-    } else {
-      uni.showToast({
-        title: JSON.stringify(err),
-        icon: 'none',
-      });
-    }
+    uni.showToast({
+      title: err.message || '连接服务器异常',
+      icon: 'none',
+    });
   },
 );
 
+function buildURLWithParams(url: string, params: any) {
+  const queryString = Object.keys(params)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key] || '')}`)
+    .join('&');
+
+  return `${url}?${queryString}`;
+}
+
 const request = {
   get: async <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> => {
-    return instance.get<T>(url, data, config) as Promise<T>;
+    let newUrl = url;
+    if (data) {
+      newUrl = buildURLWithParams(url, data);
+    }
+    return instance.get<T>(newUrl, config) as Promise<T>;
   },
   post: async <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> => {
     return instance.post<T>(url, data, config) as Promise<T>;

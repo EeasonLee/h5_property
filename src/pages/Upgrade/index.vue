@@ -23,13 +23,13 @@
           <td>{{ item.price }}</td>
           <td>
             <view class="flex-y-center-x-center">
-              <image
+              <!-- <image
                 v-if="index < 3"
                 src="@/static/upgrade/quchongzhi.png"
                 style="width: 156rpx; height: 52rpx; display: block"
-              />
+              /> -->
               <image
-                v-else
+                v-if="index >= 3"
                 src="@/static/upgrade/shangwu.png"
                 style="width: 156rpx; height: 52rpx; display: block"
               />

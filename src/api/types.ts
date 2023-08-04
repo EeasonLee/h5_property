@@ -79,6 +79,8 @@ export interface IUserInfo {
    * 今日推广人数
    */
   today_promotion: number;
+  sum_recharge: number;
+  add_recharge: number;
 }
 
 export interface IPromotionLog {
@@ -112,6 +114,7 @@ export interface IPromotionLog {
    */
   type: number;
   update_time: string;
+  partner_phone: string;
 }
 
 export interface IGradeList {
