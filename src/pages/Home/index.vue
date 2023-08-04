@@ -37,7 +37,7 @@
           />
         </view>
         <view class="info_item">
-          <text> 下线数：{{ userData?.below }} </text>
+          <text> 会员数量：{{ userData?.below }} </text>
           <image
             @click="goPage('/pages/Subordinate/index')"
             src="@/static/home/chakan.png"
@@ -48,7 +48,7 @@
 
       <view class="info">
         <view class="info_item">
-          <text> 上级代理昵称：{{ userData?.nickname }} </text>
+          <text> 你的服务商：{{ userData?.nickname }} </text>
         </view>
       </view>
 
@@ -122,7 +122,7 @@
       >
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
-            <view style="font-weight: 400">下线手机号：{{ item.partner_phone }}</view>
+            <view style="font-weight: 400">会员手机号：{{ item.partner_phone }}</view>
             <view>{{ item.amount }}</view>
           </view>
 
