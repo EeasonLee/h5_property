@@ -55,6 +55,13 @@
 				"navigationBarTitleText": "绑定银行卡",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/Withdraw/index",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"navigationStyle": "custom"
+			}
 		}
 	],
 	"globalStyle": {
