@@ -143,10 +143,9 @@
     background: #d2ecff;
     border-radius: 14rpx;
     margin-top: 18rpx;
-
     margin-bottom: 25rpx;
-    flex-grow: 1; //自适应屏幕剩下的高度
-    height: 731rpx;
+    // flex-grow: 1; //自适应屏幕剩下的高度
+    height: 1000rpx;
     // 如果你没有设置height: 0px;
     // 而且div元素的内容高度不超过默认的高度，那么它可能会继续占据默认的高度，从而导致其他具有flex-grow属性的元素无法显示。
     // 通过设置height: 0px;

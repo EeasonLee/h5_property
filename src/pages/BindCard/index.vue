@@ -24,23 +24,10 @@
       </view>
 
       <view class="flex-y-center" style="margin-top: 40rpx">
-        <view class="text table">绑定银行卡：</view>
-        <view>
-          <u-input
-            placeholder="请输入开户行"
-            border="none"
-            :customStyle="customStyle"
-            :placeholderStyle="placeholderStyle"
-            v-model="bank_name"
-          />
-        </view>
-      </view>
-
-      <view class="flex-y-center" style="margin-top: 40rpx">
         <view class="text table">银行卡号：</view>
         <view>
           <u-input
-            placeholder="请输入您的卡号"
+            placeholder="请输入您的银行卡号"
             border="none"
             :customStyle="customStyle"
             :placeholderStyle="placeholderStyle"
@@ -51,7 +38,35 @@
       </view>
 
       <view style="font-size: 26rpx; color: #dd4343; margin: 8rpx 62rpx 0 230rpx">
-        注：新卡将默认设置为提现卡，请确保信息真实有效
+        注: 新卡将默认设置为提现卡
+      </view>
+
+      <view class="flex-y-center" style="margin-top: 40rpx">
+        <view class="text table">手机号：</view>
+        <view>
+          <u-input
+            placeholder="请输入您的手机号"
+            border="none"
+            :customStyle="customStyle"
+            :placeholderStyle="placeholderStyle"
+            type="number"
+            v-model="phone"
+          />
+        </view>
+      </view>
+
+      <view class="flex-y-center" style="margin-top: 40rpx">
+        <view class="text table">身份证号：</view>
+        <view>
+          <u-input
+            placeholder="请输入您的身份证号"
+            border="none"
+            :customStyle="customStyle"
+            :placeholderStyle="placeholderStyle"
+            type="number"
+            v-model="id_card"
+          />
+        </view>
       </view>
 
       <u-button
@@ -85,28 +100,47 @@
   import { ref } from 'vue';
 
   const bank_no = ref();
-  const bank_name = ref();
   const name = ref();
+  const phone = ref();
+  const id_card = ref();
 
   const confirm = () => {
     if (!name.value) {
       showToast('请输入真实姓名');
       return;
     }
-
-    if (!bank_name.value) {
-      showToast('请输入开户行');
-      return;
-    }
     if (!bank_no.value) {
       showToast('请输入银行卡号');
       return;
     }
+    if (!phone.value) {
+      showToast('请输入手机号');
+      return;
+    }
+    if (!id_card.value) {
+      showToast('请输入身份证号');
+      return;
+    }
 
-    bindCard({ bank_no: bank_no.value, bank_name: bank_name.value, name: name.value }).then(() => {
-      showToast('添加成功');
-      uni.navigateBack();
+    uni.showLoading({
+      title: '提交中',
+      mask: true,
     });
+
+    bindCard({
+      bank_no: bank_no.value,
+      id_card: id_card.value,
+      name: name.value,
+      phone: phone.value,
+    })
+      .then(() => {
+        uni.hideLoading();
+        showToast('添加成功');
+        uni.navigateBack();
+      })
+      .catch(() => {
+        uni.hideLoading();
+      });
   };
 
   const showToast = (text: string) => {

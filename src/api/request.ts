@@ -9,7 +9,9 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   config.headers.token = uni.getStorageSync('token');
   // config.headers.token =
-  //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkxMTUzNTY4LCJuYmYiOjE2OTExNTM1NjgsImV4cCI6MTY5MTc1ODM2OCwidXNlcl9pZCI6MX0.ikRMhS4rw5ubTedh4GfCZoz-_T9MgerNM4Ymmw37UtM';
+  // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkxOTQxMDUwLCJuYmYiOjE2OTE5NDEwNTAsImV4cCI6MTY5MjU0NTg1MCwidXNlcl9pZCI6NjV9.OZQiChHRS-rltPgLWuIstwl163prWt-N090d8NBE6UU';
+  // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkxOTQwNTA4LCJuYmYiOjE2OTE5NDA1MDgsImV4cCI6MTY5MjU0NTMwOCwidXNlcl9pZCI6MjR9.BfkrV9Eo-FWjRQNG8aK0Fj1DaQHOoZtVCrqg7K2ubQg';
+  // 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2Nhbm5vbi5rdXdhbnhpbmdxaXUuY29tLyIsImF1ZCI6Imh0dHBzOi8vY2Fubm9uLmt1d2FueGluZ3FpdS5jb20vIiwiaWF0IjoxNjkxNTczMDM1LCJuYmYiOjE2OTE1NzMwMzUsImV4cCI6MTY5MjE3NzgzNSwidXNlcl9pZCI6MjF9.L7yzxGN5yS8HZJ2g-xOe2o-Lrq43cXuvDkpRmdgrO3M';
 
   if (config.method === 'POST') config.headers['Content-Type'] = 'application/json';
 

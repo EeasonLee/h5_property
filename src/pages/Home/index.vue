@@ -1,30 +1,13 @@
 <template>
   <view class="content">
-    <!-- 轮播 -->
-    <view style="width: 750rpx">
-      <u-swiper
-        :list="banner"
-        indicator
-        height="200rpx"
-        radius="0"
-        :autoplay="false"
-        indicatorStyle="bottom: 9rpx"
-        @change="(e: any) => (current = e.current)"
-      >
-        <template #indicator>
-          <view class="indicator">
-            <view
-              class="indicator__dot"
-              v-for="(_, index) in banner"
-              :key="index"
-              :class="[index === current && 'indicator__dot--active']"
-            >
-            </view>
-          </view>
-        </template>
-      </u-swiper>
-    </view>
-    <!-- 轮播 -->
+    <u-navbar :autoBack="false" :leftIcon="''" bgColor="#5980f9" leftIconColor="#fff" placeholder>
+      <template #center>
+        <image src="@/static/title/tgzx.png" style="width: 149rpx; height: 43rpx; display: block" />
+      </template>
+      <template #right>
+        <image src="@/static/icon/sx.png" style="width: 36rpx; height: 30rpx; display: block" />
+      </template>
+    </u-navbar>
 
     <view class="infoBox">
       <view class="info">
@@ -37,7 +20,7 @@
           />
         </view>
         <view class="info_item">
-          <text> 会员数量：{{ userData?.below }} </text>
+          <text> 会员数：{{ userData?.below }} </text>
           <image
             @click="goPage('/pages/Subordinate/index')"
             src="@/static/home/chakan.png"
@@ -46,33 +29,61 @@
         </view>
       </view>
 
-      <view class="info">
-        <view class="info_item">
-          <text> 你的服务商：{{ userData?.nickname }} </text>
+      <view style="background: #fff; height: 1rpx; margin: 19rpx 0rpx 30rpx" />
+
+      <view style="display: flex; justify-content: space-around; text-align: center">
+        <view class="field">
+          <view>今日收益</view>
+          <view>{{ userData?.today_income }}</view>
+        </view>
+        <view class="field">
+          <view>今日推广人数</view>
+          <view>{{ userData?.today_promotion }}</view>
+        </view>
+        <view class="field">
+          <view>我的服务商号</view>
+          <view>{{ userData?.partner_phone }}</view>
         </view>
       </view>
 
-      <view class="info" style="justify-content: left">
-        <view class="info_item">
-          <text> 今日收益： </text>
-          <text style="color: #ff8484">{{ userData?.today_income }} </text>
+      <view
+        style="display: flex; justify-content: space-around; text-align: center; margin-top: 20rpx"
+      >
+        <view class="field">
+          <view>我的累计充值</view>
+          <view>{{ userData?.sum_recharge }}</view>
         </view>
-        <view class="info_item" style="margin-left: 66rpx">
-          <text> 今日推广人数： </text>
-          <text style="color: #6dff74">{{ userData?.today_promotion }} </text>
+        <view class="field">
+          <view>会员累计充值</view>
+          <view>{{ userData?.add_recharge }}</view>
+        </view>
+        <view class="field">
+          <view>我的股权份数</view>
+          <view>{{ userData?.stock_num }}</view>
         </view>
       </view>
 
-      <view class="info">
-        <view class="info_item">
-          <text> 可提款： </text>
+      <view style="background: #fff; height: 1rpx; margin: 31rpx 0rpx 39rpx" />
+
+      <view style="display: flex; justify-content: space-between">
+        <view>
+          <text
+            style="font-size: 32rpx; font-family: Microsoft YaHei; font-weight: 400; color: #ffffff"
+          >
+            直推钱包：
+          </text>
           <text style="color: #ffeb7f">{{ userData?.amount }}</text>
+        </view>
+
+        <view>
           <image
-            @click="goPage('/pages/Cash/index')"
+            @click="goPage('/pages/Withdraw/index?type=1')"
             src="@/static/home/woyaotixian.png"
             style="width: 156rpx; height: 52rpx; display: block"
           />
+        </view>
 
+        <view>
           <image
             @click="goPage('/pages/CashLog/index')"
             src="@/static/home/tikuanjilu.png"
@@ -81,33 +92,59 @@
         </view>
       </view>
 
-      <view class="info">
-        <view class="info_item">
-          <text> 我的累计充值：{{ userData?.sum_recharge }} </text>
+      <view style="display: flex; justify-content: space-between; margin-top: 25rpx">
+        <view>
+          <text
+            style="font-size: 32rpx; font-family: Microsoft YaHei; font-weight: 400; color: #ffffff"
+          >
+            积分钱包：
+          </text>
+          <text style="color: #ffeb7f">{{ userData?.indirect_account_amount }}</text>
+        </view>
+
+        <view>
+          <image
+            @click="goPage('/pages/Withdraw/index?type=2')"
+            src="@/static/home/woyaotixian.png"
+            style="width: 156rpx; height: 52rpx; display: block"
+          />
+        </view>
+
+        <view>
+          <image
+            @click="goPage('/pages/CashLog/index')"
+            src="@/static/home/tikuanjilu.png"
+            style="width: 156rpx; height: 52rpx; display: block; margin-left: 4rpx"
+          />
         </view>
       </view>
 
-      <view class="info">
-        <view class="info_item">
-          <text> 团队累计充值：{{ userData?.add_recharge }} </text>
-        </view>
-      </view>
+      <view style="background: #fff; height: 1rpx; margin: 39rpx 0rpx 30rpx" />
     </view>
 
-    <view style="display: flex; align-items: center; margin-left: 43rpx; margin-top: 39rpx">
+    <view style="display: flex; align-items: center; margin-left: 43rpx">
       <view
         class="tabs"
         :class="promotionLogType == 1 && 'tabs_active'"
         @click="promotionLogType = 1"
       >
-        推广奖励
+        直推奖励
       </view>
+
       <view
         class="tabs"
         :class="promotionLogType == 2 && 'tabs_active'"
         @click="promotionLogType = 2"
       >
-        税收奖励
+        积分奖励
+      </view>
+
+      <view
+        class="tabs"
+        :class="promotionLogType == 3 && 'tabs_active'"
+        @click="promotionLogType = 3"
+      >
+        服务费
       </view>
     </view>
 
@@ -123,12 +160,24 @@
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
             <view style="font-weight: 400">会员手机号：{{ item.partner_phone }}</view>
-            <view>{{ item.amount }}</view>
+            <view>
+              <text
+                style="
+                  font-size: 30rpx;
+                  font-family: Microsoft YaHei;
+                  font-weight: 400;
+                  color: #000001;
+                "
+              >
+                充值:
+              </text>
+              {{ item.amount || 0 }}
+            </view>
           </view>
 
           <view class="table_item_2">
-            <view>会员等级：{{ item.from_user_grade }}</view>
-            <view>税收：{{ item.profit }}</view>
+            <view>等级：{{ item.from_user_grade }}</view>
+            <view>分成金额：{{ item.profit }}</view>
             <view>分成比例：{{ Number(item.ratio) * 100 + '%' }}</view>
           </view>
 
@@ -150,7 +199,7 @@
   const current = ref(0);
   const banner = [banner1];
   const userData = ref<IUserInfo>();
-  const promotionLogType = ref<1 | 2>(1);
+  const promotionLogType = ref<1 | 2 | 3>(1);
 
   userInfo().then((res) => {
     userData.value = res.data;
@@ -214,6 +263,22 @@
     display: flex;
     flex-direction: column;
 
+    .field {
+      flex: 1;
+      :first-child {
+        font-size: 26rpx;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #ffffff;
+      }
+      :last-child {
+        font-size: 22rpx;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #000000;
+      }
+    }
+
     .info {
       display: flex;
       align-items: center;
@@ -266,7 +331,7 @@
     border-radius: 14rpx;
     margin-top: -3rpx;
     margin-bottom: 25rpx;
-    flex-grow: 1; //自适应屏幕剩下的高度
+    // flex-grow: 1; //自适应屏幕剩下的高度
     height: 731rpx;
     // 如果你没有设置height: 0px;
     // 而且div元素的内容高度不超过默认的高度，那么它可能会继续占据默认的高度，从而导致其他具有flex-grow属性的元素无法显示。
@@ -290,7 +355,8 @@
 
       &_2 {
         display: flex;
-        grid-gap: 49rpx;
+        justify-content: space-between;
+        // grid-gap: 49rpx;
         margin-top: 20rpx;
         font-size: 26rpx;
         font-family: Microsoft YaHei;

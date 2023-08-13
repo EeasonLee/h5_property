@@ -13,7 +13,7 @@
       <view class="title">
         <text>提现金额</text>
         <text style="color: #a5a5a5; margin-left: 28rpx; font-size: 24rpx">
-          可提现金额：{{ walletInfo?.balanceMoney || '0.00' }} 元
+          可提现金额：{{ withdrawInfo.total || '0.00' }} 元
         </text>
       </view>
 
@@ -38,7 +38,7 @@
               <view class="input-pre">￥</view>
             </template>
             <template #suffix>
-              <text class="allWithdraw" @click="form.withdrawMoney = walletInfo?.balanceMoney || 0">
+              <text class="allWithdraw" @click="form.withdrawMoney = withdrawInfo.total || 0">
                 全部提现
               </text>
             </template>
@@ -47,8 +47,8 @@
       </u-form>
 
       <view class="explain">
-        提现金额不能小于 {{ withdrawInfo.min }}元 、 大于 {{ withdrawInfo.max }}元，服务费比率
-        {{ withdrawInfo.serviceFeeRatio }} %
+        提现金额不能小于 {{ withdrawInfo.min }}元 、 大于 {{ withdrawInfo.max }}元，提现税率
+        {{ withdrawInfo.serviceFeeRatio }}
       </view>
       <view class="tip">提现将扣除税费：￥{{ deduct || 0 }}</view>
       <view class="tip">提现实际到账金额：￥{{ reality || 0 }}</view>
@@ -92,31 +92,23 @@
 
       <view class="form">
         <u-form labelPosition="left" :model="form" :rules="rules" ref="formRef2">
-          <u-form-item
-            labelWidth="90"
-            label="支付宝账号"
-            prop="alipayAccount"
-            v-if="radioValue == 1"
-          >
-            <u-input
-              v-model="form.alipayAccount"
-              placeholder="请填写支付宝账号"
-              border="none"
-            ></u-input>
+          <u-form-item labelWidth="90" label="支付宝账号" prop="account" v-if="radioValue == 1">
+            <u-input v-model="form.account" placeholder="请填写支付宝账号" border="none"></u-input>
           </u-form-item>
-          <u-form-item labelWidth="90" label="支付宝姓名" prop="name" v-if="radioValue == 1">
+          <!-- <u-form-item labelWidth="90" label="支付宝姓名" prop="name" v-if="radioValue == 1">
             <u-input v-model="form.name" placeholder="请填写支付宝姓名" border="none"></u-input>
-          </u-form-item>
-          <u-form-item v-else-if="radioValue == 2" label="手机号" prop="phone" labelWidth="60">
-            <u-input v-model="form.phone" placeholder="请填写手机号" border="none" type="number">
+          </u-form-item> -->
+
+          <u-form-item v-else-if="radioValue == 2" label="手机号" prop="account" labelWidth="60">
+            <u-input v-model="form.account" placeholder="请填写手机号" border="none" type="number">
             </u-input>
           </u-form-item>
-          <u-form-item v-else-if="radioValue == 3" label="银行卡号" prop="cardNo" labelWidth="90">
+
+          <u-form-item v-else-if="radioValue == 3" label="银行卡号" labelWidth="90">
             <view class="cardNo">
               <view style="margin-right: 10rpx">
-                {{ form.cardNo || '请选择' }}
+                {{ withdrawInfo.bank_no || '未绑定' }}
               </view>
-              <u-icon name="arrow-right" size="12" color="#333" />
             </view>
           </u-form-item>
         </u-form>
@@ -128,7 +120,9 @@
             <u-checkbox @change="checkboxChange" shape="circle" activeColor="#477EEE" size="14" />
             <view class="deal">
               我已同意
-              <text style="color: #477eee" @click="goToPage"> 《个人信息使用授权书》 </text>
+              <text style="color: #477eee" @click="goPage('/pages/Agreement/index')">
+                《个人信息使用授权书》
+              </text>
             </view>
           </view>
         </u-checkbox-group>
@@ -137,9 +131,15 @@
 
     <view class="box">
       <view class="title">详细说明</view>
-      <view class="detail"> 当日单笔提现不超过2万元，每月累计提现不超过10万元 </view>
-      <view class="detail"> 提现税费6%+服务费1% </view>
-      <view class="detail"> 每周一提现，48小时到账（如遇节假日将延后） </view>
+      <view class="detail">
+        当日单笔提现不超过{{ withdrawInfo.today_cash_money }}万元，每月累计提现不超过{{
+          withdrawInfo.month_max_cash_money
+        }}元
+      </view>
+      <view class="detail">
+        提现税费{{ withdrawInfo.cash_fee }}+服务费{{ withdrawInfo.service_fee }}
+      </view>
+      <view class="detail"> 每周五提现，48小时到账（如遇节假日将延后） </view>
     </view>
 
     <view class="fixed-bottom-but">
@@ -167,6 +167,8 @@
 <script lang="ts" setup>
   import { computed, reactive, ref } from 'vue';
   import { toast } from '@/utils';
+  import { cash, getCashPageData } from '@/api';
+  import { onShow } from '@dcloudio/uni-app';
 
   interface Form {
     withdrawMoney: number;
@@ -175,7 +177,11 @@
     amount: string;
     cardNo: string;
     name: string;
+    account: string;
   }
+
+  const props: any = defineProps();
+  console.log(props);
 
   const walletInfo = ref();
   const showSuccess = ref(false);
@@ -185,12 +191,62 @@
     isConsent.value = e;
   };
 
-  const goToPage = () => {};
+  const goPage = (url: string) => {
+    if (!url) return;
+    uni.navigateTo({ url });
+  };
 
   const withdrawInfo = ref({
     min: 1,
     max: 20000,
-    serviceFeeRatio: 7,
+    serviceFeeRatio: 1,
+    service_fee: 0,
+    cash_fee: 0,
+    today_cash_money: 0,
+    month_max_cash_money: 0,
+    total: 0,
+    bank_no: '',
+  });
+
+  const getData = () => {
+    getCashPageData().then((res) => {
+      if (!res.data.bank_no) {
+        uni.showModal({
+          title: '提示',
+          content: '您还没有绑定银行卡\n请先绑定银行卡后提现',
+          success: function (res) {
+            if (res.confirm) {
+              console.log('用户点击确定');
+              goPage('/pages/BindCard/index');
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              uni.navigateBack();
+            }
+          },
+        });
+      }
+      withdrawInfo.value.total =
+        props.type == '1' ? +(res.data.amount || 0) : +(res.data.indirect_account_amount || 0);
+      withdrawInfo.value.min = +(res.data.min_cash_money || 0);
+      withdrawInfo.value.max = +(res.data.today_cash_money || 20000);
+      withdrawInfo.value.today_cash_money = +(res.data.today_cash_money || 0);
+      withdrawInfo.value.month_max_cash_money = +(res.data.month_max_cash_money || 0);
+      withdrawInfo.value.service_fee = +(res.data.service_fee || 0);
+      withdrawInfo.value.cash_fee = +(res.data.cash_fee || 0);
+      withdrawInfo.value.serviceFeeRatio = +(
+        +(res.data.cash_fee || 0) + +(res.data.service_fee || 0)
+      ).toFixed(2);
+      withdrawInfo.value.bank_no = res.data.bank_no;
+
+      console.log(withdrawInfo.value);
+    });
+    // .catch(() => {
+    //   goPage('/pages/BindCard/index');
+    // });
+  };
+
+  onShow(() => {
+    getData();
   });
 
   const formRef1 = ref();
@@ -202,6 +258,7 @@
     phone: '',
     amount: '',
     cardNo: '',
+    account: '',
   });
 
   const rules = {
@@ -211,34 +268,40 @@
       message: '请填写金额',
       trigger: ['blur', 'change'],
     },
-    alipayAccount: {
-      type: 'string',
-      required: true,
-      message: '请填写支付宝账号',
-      trigger: ['blur', 'change'],
-    },
-    name: {
-      type: 'string',
-      required: true,
-      message: '请填写支付宝姓名',
-      trigger: ['blur', 'change'],
-    },
-    phone: {
-      type: 'string',
-      required: true,
-      message: '手机号码不正确',
-      validator: (_: any, value: string) => {
-        return uni.$u.test.mobile(value);
-      },
-      trigger: ['change', 'blur'],
-    },
+    // account: {
+    //   type: 'string',
+    //   required: true,
+    //   message: '请填写账号',
+    //   trigger: ['blur', 'change'],
+    // },
+    // alipayAccount: {
+    //   type: 'string',
+    //   required: true,
+    //   message: '请填写支付宝账号',
+    //   trigger: ['blur', 'change'],
+    // },
+    // name: {
+    //   type: 'string',
+    //   required: true,
+    //   message: '请填写支付宝姓名',
+    //   trigger: ['blur', 'change'],
+    // },
+    // phone: {
+    //   type: 'string',
+    //   required: true,
+    //   message: '手机号码不正确',
+    //   validator: (_: any, value: string) => {
+    //     return uni.$u.test.mobile(value);
+    //   },
+    //   trigger: ['change', 'blur'],
+    // },
   };
 
   const reality = ref();
 
   const deduct = computed(() => {
     if (form.withdrawMoney > 0) {
-      const value = form.withdrawMoney * ((withdrawInfo.value.serviceFeeRatio || 0) * 0.01);
+      const value = form.withdrawMoney * (withdrawInfo.value.serviceFeeRatio || 1);
       console.log('deduct', value);
       const realityValue = form.withdrawMoney - value;
       reality.value = realityValue.toFixed(2);
@@ -252,10 +315,13 @@
       if (!isConsent.value) {
         return toast('请先同意并勾选协议');
       }
+      if (radioValue.value != 3 && !form.account) {
+        return toast('请填写账号');
+      }
       if (
         withdrawInfo.value.max &&
         form.withdrawMoney > withdrawInfo.value.max &&
-        form.withdrawMoney > (walletInfo.value?.balanceMoney || 0)
+        form.withdrawMoney > (withdrawInfo.value.total || 0)
       ) {
         return toast('提现金额超出最大值');
       }
@@ -265,12 +331,19 @@
 
       await formRef1.value.validate();
       await formRef2.value.validate();
+      console.log({
+        money: form.withdrawMoney,
+        account: radioValue.value == 3 ? undefined : form.account,
+        mode: radioValue.value,
+        account_type: +props.type,
+      });
 
-      // await postWithdraw({
-      //   withdrawalAmount: form.withdrawMoney,
-      //   name: form.name,
-      //   account: form.alipayAccount,
-      // });
+      await cash({
+        money: form.withdrawMoney,
+        account: form.account,
+        mode: radioValue.value,
+        account_type: props.type,
+      });
       toast('提现申请成功');
       uni.navigateBack();
     } catch (error) {
@@ -278,17 +351,11 @@
     }
   };
 
-  // userWallet().then((res) => {
-  //   walletInfo.value = res.data;
-  // });
-
   const formatting = (e: string) => {
     if (!e) return;
     const value = Number(e);
     form.withdrawMoney = Number(value.toFixed(2));
   };
-
-  const goPage = () => {};
 
   const radioList = [
     {
@@ -375,11 +442,6 @@
 
   .title {
     margin-bottom: 8rpx;
-    // font-size: 32rpx;
-    // font-family: PingFangSC-Medium, PingFang SC;
-    // font-weight: 500;
-    // color: #333333;
-
     font-size: 26rpx;
     font-family: Microsoft YaHei;
     font-weight: 400;

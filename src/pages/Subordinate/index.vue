@@ -22,11 +22,18 @@
         :refresher-enabled="false"
         :default-page-size="10"
         :fixed="false"
+        :paging-style="{
+          'flex-grow': '1',
+        }"
       >
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
             <view style="font-weight: 400">{{ item.nickname }}</view>
-            <view>{{ item.total }}</view>
+            <view>{{ item.total || 0 }}</view>
+          </view>
+
+          <view class="table_item_2">
+            <text>手机号：{{ item.mobile }}</text>
           </view>
 
           <view class="table_item_2">
@@ -68,7 +75,7 @@
     fromUserList({ grade_id: gradeList.value[currentGradeListIndex.value].id, page: pageNo })
       .then((res) => {
         if (!gradeList.value[currentGradeListIndex.value].id) {
-          gradeList.value[0].name = `全部(${res.data.total})`;
+          gradeList.value[0].name = `全部(${res.data?.total || 0})`;
         }
         paging.value.complete(res.data.data);
       })
@@ -125,10 +132,10 @@
     background: #d2ecff;
     border-radius: 14rpx;
     margin-top: 18rpx;
-
     margin-bottom: 25rpx;
-    flex-grow: 1; //自适应屏幕剩下的高度
-    height: 731rpx;
+    display: flex;
+    // flex-grow: 1; //自适应屏幕剩下的高度
+    height: 1000rpx;
     // 如果你没有设置height: 0px;
     // 而且div元素的内容高度不超过默认的高度，那么它可能会继续占据默认的高度，从而导致其他具有flex-grow属性的元素无法显示。
     // 通过设置height: 0px;

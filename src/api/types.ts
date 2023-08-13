@@ -81,6 +81,9 @@ export interface IUserInfo {
   today_promotion: number;
   sum_recharge: number;
   add_recharge: number;
+  partner_phone: string;
+  stock_num: string;
+  indirect_account_amount: string;
 }
 
 export interface IPromotionLog {
@@ -158,6 +161,7 @@ export interface IFromUserList {
    * 总计
    */
   total: string;
+  mobile: string;
 }
 
 export interface IGetGradeList {
@@ -199,19 +203,43 @@ export interface ICashLog {
 
 export interface ICashPageData {
   /**
-   * 余额
+   * 直推账户余额
    */
-  amount: number;
+  amount: string;
   /**
    * 开户行
    */
   bank_name: string;
   /**
-   * 银行卡号
+   * 用户真实名称
    */
-  bank_no: number;
+  bank_no: string;
+  /**
+   * 提现税费
+   */
+  cash_fee: string;
+  /**
+   * 间推账户余额
+   */
+  indirect_account_amount: string;
+  /**
+   * 最小提现金额
+   */
+  min_cash_money: string;
+  /**
+   * 当月最大提现金额
+   */
+  month_max_cash_money: string;
   /**
    * 真是名称
    */
   name: string;
+  /**
+   * 提现服务费
+   */
+  service_fee: string;
+  /**
+   * 当日单笔提现最大金额
+   */
+  today_cash_money: string;
 }

@@ -29,7 +29,7 @@ export const userInfo = () => {
  * 分佣记录
  * 记录类型1税收奖励 2推广奖励
  */
-export const promotionLog = (data: { type: 1 | 2; page: number }) => {
+export const promotionLog = (data: { type: number; page: number }) => {
   return request.get<ResponsePage<IPromotionLog[]>>('/api/user/promotionLog', data);
 };
 
@@ -71,23 +71,13 @@ export const getCashPageData = () => {
 /**
  * 绑定银行卡
  */
-export const bindCard = (data: {
-  bank_name: string;
-  /**
-   * 银行卡号
-   */
-  bank_no: number;
-  /**
-   * 真实姓名
-   */
-  name: string;
-}) => {
+export const bindCard = (data: any) => {
   return request.post<Response<any>>('/api/user/bindCard', data);
 };
 
 /**
  * 提现
  */
-export const cash = (data: { money: number }) => {
+export const cash = (data: any) => {
   return request.post<Response<any>>('/api/user/cash', data);
 };

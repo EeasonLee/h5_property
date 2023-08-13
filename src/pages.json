@@ -62,6 +62,12 @@
 				"navigationBarTitleText": "提现",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/Agreement/index",
+			"style": {
+				"navigationBarTitleText": "个人信息使用授权书",
+			}
 		}
 	],
 	"globalStyle": {
