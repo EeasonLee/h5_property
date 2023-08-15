@@ -5,7 +5,11 @@
         <image src="@/static/title/tgzx.png" style="width: 149rpx; height: 43rpx; display: block" />
       </template>
       <template #right>
-        <image src="@/static/icon/sx.png" style="width: 36rpx; height: 30rpx; display: block" />
+        <image
+          @click="flushed"
+          src="@/static/icon/sx.png"
+          style="width: 36rpx; height: 30rpx; display: block"
+        />
       </template>
     </u-navbar>
 
@@ -194,16 +198,16 @@
   import { userInfo, promotionLog } from '@/api';
   import { ref, watch } from 'vue';
   import type { IUserInfo, IPromotionLog } from '@/api/types';
-  import banner1 from '@/static/home/banner.png';
+  import { onShow } from '@dcloudio/uni-app';
 
-  const current = ref(0);
-  const banner = [banner1];
   const userData = ref<IUserInfo>();
   const promotionLogType = ref<1 | 2 | 3>(1);
 
-  userInfo().then((res) => {
-    userData.value = res.data;
-  });
+  const getUserInfo = () => {
+    userInfo().then((res) => {
+      userData.value = res.data;
+    });
+  };
 
   const paging = ref();
   const dataList = ref<IPromotionLog[]>();
@@ -230,6 +234,15 @@
     if (!url) return;
     uni.navigateTo({ url });
   };
+
+  const flushed = () => {
+    getUserInfo();
+    refresh();
+  };
+
+  onShow(() => {
+    flushed();
+  });
 </script>
 
 <style lang="scss" scoped>

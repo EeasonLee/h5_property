@@ -105,10 +105,11 @@
           </u-form-item>
 
           <u-form-item v-else-if="radioValue == 3" label="银行卡号" labelWidth="90">
-            <view class="cardNo">
+            <view class="cardNo" @click="goPage('/pages/BindCard/index')">
               <view style="margin-right: 10rpx">
-                {{ withdrawInfo.bank_no || '未绑定' }}
+                {{ withdrawInfo.bank_no || '去绑定银行卡' }}
               </view>
+              <u-icon name="arrow-right" size="12" color="#333" />
             </view>
           </u-form-item>
         </u-form>

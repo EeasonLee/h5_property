@@ -63,7 +63,7 @@
             border="none"
             :customStyle="customStyle"
             :placeholderStyle="placeholderStyle"
-            type="number"
+            type="idcard"
             v-model="id_card"
           />
         </view>
