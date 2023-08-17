@@ -63,7 +63,7 @@
 
   const show = ref(false);
   const currentGradeListIndex = ref(0);
-  const gradeList = ref<IGetGradeList[]>([{ id: undefined, name: '全部' }] as IGetGradeList[]);
+  const gradeList = ref<IGetGradeList[]>([{ id: undefined, name: '会员列表' }] as IGetGradeList[]);
 
   getGradeList().then((res) => {
     gradeList.value.push(...res.data);
@@ -75,7 +75,7 @@
     fromUserList({ grade_id: gradeList.value[currentGradeListIndex.value].id, page: pageNo })
       .then((res) => {
         if (!gradeList.value[currentGradeListIndex.value].id) {
-          gradeList.value[0].name = `全部(${res.data?.total || 0})`;
+          gradeList.value[0].name = `会员列表(${res.data?.total || 0})`;
         }
         paging.value.complete(res.data.data);
       })

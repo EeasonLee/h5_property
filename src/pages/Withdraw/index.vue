@@ -133,7 +133,7 @@
     <view class="box">
       <view class="title">详细说明</view>
       <view class="detail">
-        当日单笔提现不超过{{ withdrawInfo.today_cash_money }}万元，每月累计提现不超过{{
+        当日单笔提现不超过{{ withdrawInfo.today_cash_money }}元，每月累计提现不超过{{
           withdrawInfo.month_max_cash_money
         }}元
       </view>
@@ -359,16 +359,16 @@
   };
 
   const radioList = [
-    {
-      name: '支付宝',
-      value: 1,
-      icon: '/static/icon/zhifubao.png',
-    },
-    {
-      name: '微信',
-      value: 2,
-      icon: '/static/icon/weixin.png',
-    },
+    // {
+    //   name: '支付宝',
+    //   value: 1,
+    //   icon: '/static/icon/zhifubao.png',
+    // },
+    // {
+    //   name: '微信',
+    //   value: 2,
+    //   icon: '/static/icon/weixin.png',
+    // },
     {
       name: '银行卡',
       value: 3,
@@ -376,7 +376,7 @@
     },
   ];
 
-  const radioValue = ref<number>(1);
+  const radioValue = ref<number>(3);
   const radioChange = (v: number) => {
     if (v === radioValue.value) return;
     radioValue.value = v;

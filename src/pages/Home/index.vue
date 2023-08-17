@@ -164,7 +164,7 @@
         <view class="table_item" v-for="(item, index) in dataList" :key="index">
           <view class="flex-y-center-x-between table_item_1">
             <view style="font-weight: 400">会员手机号：{{ item.partner_phone }}</view>
-            <view>
+            <view v-if="promotionLogType != 3">
               <text
                 style="
                   font-size: 30rpx;

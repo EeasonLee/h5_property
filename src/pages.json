@@ -31,7 +31,7 @@
 		{
 			"path": "pages/Subordinate/index",
 			"style": {
-				"navigationBarTitleText": "我的下级",
+				"navigationBarTitleText": "我的会员",
 				"navigationStyle": "custom"
 			}
 		},
