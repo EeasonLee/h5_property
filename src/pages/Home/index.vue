@@ -181,7 +181,11 @@
 
           <view class="table_item_2">
             <view>等级：{{ item.from_user_grade }}</view>
-            <view>分成金额：{{ item.profit }}</view>
+            <view>
+              <text v-if="promotionLogType != 3">分成金额：</text>
+              <text v-else>团队管理奖：</text>
+              {{ item.profit }}
+            </view>
             <view>分成比例：{{ Number(item.ratio) * 100 + '%' }}</view>
           </view>
 
